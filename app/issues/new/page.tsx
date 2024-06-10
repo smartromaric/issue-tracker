@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateIssueSchema } from '@/app/validationSchema';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = Zod.infer<typeof CreateIssueSchema>
 
@@ -16,6 +17,7 @@ type IssueForm = Zod.infer<typeof CreateIssueSchema>
 const page = () => {
   const router = useRouter();
   const [error,setError] = useState("")
+  const [isSubmitting,setSubmitting] = useState(false)
   const { register, handleSubmit, control,formState:{errors} } = useForm<IssueForm>({resolver:zodResolver(CreateIssueSchema)});
   return (
     <div className='max-w-xl'>
@@ -25,9 +27,11 @@ const page = () => {
     <form className='space-y-3' 
     onSubmit={handleSubmit(async (data)=>{
       try {
+        setSubmitting(true)
         await axios.post("/api/issues/",data)
         router.push('/issues')
       } catch (error) {
+        setSubmitting(false)
         setError("An unexcepted error occurred.")
         console.log(error)
       }
@@ -41,7 +45,8 @@ const page = () => {
         render={({ field }) => 
           <SimpleMDE placeholder='Description' {...field}/>
         } />
-       <Button>Submit new issue</Button>
+       <Button disabled={isSubmitting}>Submit new issue {isSubmitting && <Spinner/>}  </Button>
+       
 
     </form>
 </div>
