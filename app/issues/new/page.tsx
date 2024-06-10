@@ -19,13 +19,8 @@ const page = () => {
   const [error,setError] = useState("")
   const [isSubmitting,setSubmitting] = useState(false)
   const { register, handleSubmit, control,formState:{errors} } = useForm<IssueForm>({resolver:zodResolver(CreateIssueSchema)});
-  return (
-    <div className='max-w-xl'>
-    {error && <Callout.Root color='red' className='mb-5'>
-      <Callout.Text>{error}</Callout.Text>
-      </Callout.Root>}
-    <form className='space-y-3' 
-    onSubmit={handleSubmit(async (data)=>{
+    
+  const submit = handleSubmit(async (data)=>{
       try {
         setSubmitting(true)
         await axios.post("/api/issues/",data)
@@ -35,7 +30,14 @@ const page = () => {
         setError("An unexcepted error occurred.")
         console.log(error)
       }
-    })}>
+    })
+  return (
+    <div className='max-w-xl'>
+    {error && <Callout.Root color='red' className='mb-5'>
+      <Callout.Text>{error}</Callout.Text>
+      </Callout.Root>}
+    <form className='space-y-3' 
+    onSubmit={submit}>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <TextField.Root placeholder='Title' {...register('title')}/>
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
