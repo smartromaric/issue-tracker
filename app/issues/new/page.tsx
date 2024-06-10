@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateIssueSchema } from '@/app/validationSchema';
-
+import ErrorMessage from '@/app/components/ErrorMessage';
 
 type IssueForm = Zod.infer<typeof CreateIssueSchema>
 
@@ -32,9 +32,9 @@ const page = () => {
         console.log(error)
       }
     })}>
-      {errors.title?.message && <Text as='p' color='red'>{errors.title.message} </Text>}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <TextField.Root placeholder='Title' {...register('title')}/>
-        {errors.description?.message && <Text as='p' color='red'>{errors.description.message} </Text>}
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Controller
         name="description"
         control={control}
