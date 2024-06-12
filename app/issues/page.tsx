@@ -1,6 +1,6 @@
 import {Table } from '@radix-ui/themes'
 import prisma from '@/prisma/client'
-import IssuesStatusBadge from '../components/IssuesStatusBadge'
+import {IssuesStatusBadge} from '@/app/components'
 import ActionIssues from './ActionIssues'
 import delay from 'delay';
 import Link from '../components/Link';
