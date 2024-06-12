@@ -4,12 +4,16 @@ import { Card, Flex, Heading } from '@radix-ui/themes'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
+import delay from 'delay'
+
+
 
 interface Props{
     params:{id:string}
 }
 
 const  page = async ({params}:Props) => {
+    await delay(2000)
     if(!parseInt(params.id))
         notFound()
     const issue = await prisma.issue.findUnique({where:{id:parseInt(params.id)}})

@@ -10,11 +10,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateIssueSchema } from '@/app/validationSchema';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
+import delay from 'delay';
 
 type IssueForm = Zod.infer<typeof CreateIssueSchema>
 
 
-const page = () => {
+const page = async () => {
   const router = useRouter();
   const [error,setError] = useState("")
   const [isSubmitting,setSubmitting] = useState(false)
@@ -31,6 +32,7 @@ const page = () => {
         console.log(error)
       }
     })
+    await delay(2000);
   return (
     <div className='max-w-xl'>
     {error && <Callout.Root color='red' className='mb-5'>
